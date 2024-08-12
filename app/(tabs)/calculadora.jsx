@@ -1,104 +1,105 @@
-import React from "react";
-import { Text, View, Button } from 'react-native';
-import { TextInput } from "react-native";
-import {useState} from "react"
+import React, { useState } from 'react';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
-const style = function (){
-    return({
-        container: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 50,
-    },
-        row:{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 10,
-    },
-        buttonWidth:{
-            width: 5
-        },
-        input: {
-            height: 40,
-            margin: 12,
-            borderWidth: 1,
-            padding: 10,
-          },
-})
-}
+const App = () => {
+  const [input, setInput] = useState('');
+  const [resultado, setResultado] = useState('');
+  const [activeButton, setActiveButton] = useState(null);
 
-export default helloWorld = function(){
-        const [text, onChangeText] = useState('Useless Text');
-        const [number1, onChangeNumber1] = useState('');
-        const [number2, onChangeNumber2] = useState('');
-        const [resultado, setResultado] = useState('');
-    
-        const soma = function(){
-             setResultado (Number(number1) + Number(number2))
-             onChangeNumber1 ('')
-             onChangeNumber2('')
-             return true
-        }
-        const subtracao = function(){
-             setResultado (Number(number1) - Number(number2))
-             onChangeNumber1 ('')
-             onChangeNumber2('')
-             return true
-        }
-        const multiplicacao = function(){
-             setResultado (Number(number1) * Number(number2))
-             onChangeNumber1 ('')
-             onChangeNumber2('')
-             return true
-        }
-        const divisao = function(){
-             setResultado (Number(number1) / Number(number2))
-             onChangeNumber1 ('')
-             onChangeNumber2('')
-             return true
-        }
-        console.log(resultado)
+  const handlePress = (value) => {
+    setInput(input + value);
+  };
 
-    return(
-        <View style={style().container}>
-            <Text>CALCULADORA</Text>
-            <Text>Digite 2 numeros</Text>
-                <View style={style().row}>
-                <TextInput style={style().input}
-                onChangeText={onChangeNumber1}
-                value={number1}
-        placeholder="Primeiro numero"
-        keyboardType="numeric"
-      />
-                <TextInput style={style().input}
-                onChangeText={onChangeNumber2}
-                value={number2}
-        placeholder="Segundo numero"
-        keyboardType="numeric"
-      />
-                    
-            </View>
-            <View style={style().row}>
-                <Button style={style().buttonWidth}
-              
-                onPress={() => soma()}
-                title="+"/>
-                
-                <Button
-                onPress={() => subtracao()}
-                title="-"/>
-                <Button
-                onPress={() => multiplicacao()}
-                title="*"/>
-                <Button
-                onPress={() => divisao()}
-                title="/"/>
-            </View>
-            <Text>Seu resultado é:{resultado}</Text>
+  const clearInput = () => {
+    setInput('');
+    setResultado('');
+  };
+
+  const calculateResult = () => {
+    try {
+      setResultado(eval(input));
+    } catch {
+      setResultado('Error');
+    }
+  };
+
+  const handleMouseEnter = (index) => {
+    setActiveButton(index);
+  };
+
+  const handleMouseLeave = () => {
+    setActiveButton(null);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.visor}>{input || '0'}</Text>
+      <Text style={styles.resultado}>Resultado: {resultado}</Text>
+      {[['1', '2', '3', '+'], ['4', '5', '6', '-'], ['7', '8', '9', '*'], ['=', '0', '/', 'C']].map((row, rowIndex) => (
+        <View key={rowIndex} style={styles.buttonRow}>
+          {row.map((value, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.button, activeButton === `${rowIndex}-${index}` && styles.shadow]}
+              onPress={() => (value === 'C' ? clearInput() : value === '=' ? calculateResult() : handlePress(value))}
+              onMouseEnter={() => handleMouseEnter(`${rowIndex}-${index}`)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Text style={styles.buttonText}>{value}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
-        
-    )
-    
-}
+      ))}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  visor: {
+    fontSize: 40,
+    backgroundColor: '#e0e0e0',
+    width: '80%',
+    textAlign: 'right',
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 5,
+  },
+  resultado: {
+    fontSize: 30,
+    marginBottom: 20,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
+    marginBottom: 10,
+  },
+  button: {
+    width: '18%',
+    backgroundColor: '#ddd',
+    padding: 20,
+    alignItems: 'center',
+    margin: 5,
+    borderRadius: 50,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonText: {
+    fontSize: 20,
+  },
+});
+
+export default App;
 
