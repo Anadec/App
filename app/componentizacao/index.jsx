@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Modal, StyleSheet, Text, View, Pressable } from 'react-native';
+import { Image, Modal, StyleSheet, Text, View, Pressable, TextInput } from 'react-native';
 import Button from './button';
 import { useState } from 'react';
 import Input from './text';
@@ -49,10 +49,12 @@ function Index() {
     const valorFinal = () => {
         const Valor = parseFloat(valor.replace(',', '.'));
         if (type === 'saque') {
-            return conta - Valor - (conta - Valor) * 0.025;
+            let imposto = valor * 0.025
+            return conta - Valor - imposto;
         }
         if (type === 'deposito') {
-            return conta + Valor + Valor * 0.01;
+            let bonus = Valor * 0.01
+            return conta + Valor + bonus;
         }
         return conta;
     };
@@ -70,6 +72,8 @@ function Index() {
             <Input
                 value={valor}
                 onChangeNumber={setValor}
+                keyboardType = "numeric"
+                placeholder='Digite um numero'
             />
             <Button
                 title={'Sacar'}
