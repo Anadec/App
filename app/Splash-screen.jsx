@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import {vw, vh} from 'react-native-expo-viewport-units'
-import {LinearGradient} from 'expo-linear-gradient'
+import {vw, vh} from 'react-native-expo-viewport-units';
+import {LinearGradient} from 'expo-linear-gradient';
+import { Link } from 'expo-router';
+
 
 
 
@@ -11,14 +13,14 @@ const SplashScreen = () => {
     <LinearGradient
         colors={[ '#000000', '#DB1100']}
         style={styles.gradient}>
-
+<Link href='/pokemon'>
             <Image 
                 source={{
                     uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/2048px-Netflix_icon.svg.png',
                 }}
                 style={styles.image} 
             />
-
+</Link>
         </LinearGradient>
     );
 };
