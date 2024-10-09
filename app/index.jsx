@@ -63,6 +63,13 @@ export default function Home() {
             <Link href="./Ifome/inicio">
                 <Text style={styles.texto}>ifome</Text>
             </Link>
+            <Link href="./Galeria">
+            <Text style={styles.texto}>Galeria</Text>
+            </Link>
+            <Link href="./Camera">
+                <Text style={styles.texto}>Camera</Text>
+            </Link>
+            
         </View>
     );
 }
